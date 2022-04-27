@@ -30,7 +30,6 @@ class Fixture:
             new_list = []
             new_pass_value = self.template[self.weekly_match_number-1][0]
             for match in range(self.weekly_match_number, 0, -1):
-                print(match)
                 if match == 0:
                     new_list.append([self.template[0][1], self.template[self.weekly_match_number-1][0]])
                 else:
@@ -48,7 +47,6 @@ class Fixture:
         fixture = []
 
         template_line = self.template[0]
-        print(template_line)
         m = 0
         while self.week_number > m:
             first_index_value = template_line[0][0]
@@ -67,16 +65,19 @@ class Fixture:
                     else:
                         week_maths.append([template_line[0][match], template_line[1][match]])
 
-                random.shuffle(week_maths)
-                fixture.append(week_maths)
+            random.shuffle(week_maths)
+            fixture.append(week_maths)
 
-                template_line[0].pop()
-                template_line[0].append(template_line[1][last_index])
+            template_line[0] = template_line[0][1:]
+            template_line[0].append(template_line[1][last_index])
 
-                if m == 0:
-                    template_line[1] = template_line[1][:-1]
-                    template_line[1].insert(0, 1)
-                    template_line[1][1] = first_index_value
+            if m == 0:
+                template_line[1] = template_line[1][:-1]
+                template_line[1].insert(0, 1)
+            else:
+                template_line[1] = template_line[1][:-1]
+                template_line[1].insert(0, 1)
+                template_line[1][1] = first_index_value
 
             m += 1
         return fixture
@@ -85,8 +86,9 @@ class Fixture:
         reverse_fixture = []
         for week in fixture:
             reverse_week = []
-            for match in week:
-                reverse_week.append(match.reverse())
+            for match_index, match in enumerate(week):
+                reverse_teams = match[::-1]
+                reverse_week.append(reverse_teams)
             reverse_fixture.append(reverse_week)
         return reverse_fixture
 
